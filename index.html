@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bar-Tabacchi Fuori Orario — Sant'Antonio, Porto Mantovano</title>
+<meta name="description" content="Bar-Tabacchi Fuori Orario, Via Marconi 13, Sant'Antonio, Porto Mantovano (MN). Aperto dalle 6:00. Colazioni, pranzo, aperitivi e servizio tabaccheria.">
+<link rel="icon" href="uploads/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F3EC; --dark:#0E0E0E; --cream:#E3D5BC; --accent:#B5622A;
+    --muted:#B39A76; --muted-dark:#7A6A54; --line:#DCCBA8; --card:#1A1A18; --card-line:#2E2A24;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--dark);font-family:'Work Sans',sans-serif;}
+  a{color:var(--dark);text-decoration:underline;}
+  a:hover{color:var(--accent);}
+  h1,h2{font-family:'Oswald',sans-serif;text-transform:uppercase;}
+  button{font-family:inherit;}
+  .oswald{font-family:'Oswald',sans-serif;}
+
+  header{position:sticky;top:0;z-index:50;background:var(--dark);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px clamp(16px,4vw,48px);}
+  .brand{display:flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;padding:0;}
+  .brand img{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+  .brand span{font-family:'Oswald',sans-serif;color:var(--cream);font-weight:600;font-size:clamp(13px,2vw,16px);letter-spacing:0.02em;line-height:1.1;text-align:left;}
+  nav{display:flex;gap:clamp(10px,3vw,28px);overflow-x:auto;}
+  nav button{color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;padding:6px 0;font-size:13px;letter-spacing:0.04em;white-space:nowrap;}
+  nav button.active{color:var(--cream);border-bottom-color:var(--accent);}
+
+  section[data-page]{display:none;}
+  section[data-page].active{display:block;}
+
+  .hero{position:relative;width:100%;height:clamp(460px,78vh,760px);overflow:hidden;}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .hero .overlay{position:absolute;inset:0;background:rgba(14,14,14,0.58);}
+  .hero .content{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:18px;}
+  .hero .content img{position:static;width:clamp(88px,14vw,140px);height:clamp(88px,14vw,140px);border-radius:50%;object-fit:cover;border:2px solid var(--cream);}
+  .hero h1{color:var(--cream);font-size:clamp(30px,6.4vw,64px);letter-spacing:0.02em;margin:0;line-height:1.05;max-width:16ch;}
+  .hero p{color:var(--cream);font-size:clamp(15px,2.4vw,20px);margin:0;max-width:32ch;opacity:0.92;}
+
+  .infobar{background:var(--dark);color:var(--cream);padding:14px clamp(16px,4vw,48px);display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:center;font-family:'Oswald',sans-serif;font-size:clamp(12px,1.6vw,15px);letter-spacing:0.03em;text-transform:uppercase;}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(20px,5vw,48px);}
+  .eyebrow{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-size:14px;margin:0 0 10px;}
+
+  .chisiamo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,5vw,64px);align-items:center;}
+  .chisiamo h2{font-size:clamp(24px,4vw,38px);margin:0 0 18px;letter-spacing:0.01em;}
+  .chisiamo p{font-size:clamp(15px,1.8vw,18px);line-height:1.6;margin:0 0 14px;}
+
+  .previews{background:var(--dark);padding:clamp(48px,8vw,96px) clamp(20px,5vw,48px);}
+  .previews-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(16px,3vw,24px);}
+  .preview-card{background:var(--card);border:1px solid var(--card-line);border-radius:4px;padding:28px 20px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;cursor:pointer;text-align:left;}
+  .preview-card .title{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:clamp(17px,2.2vw,21px);letter-spacing:0.02em;color:var(--cream);}
+  .preview-card .cta{color:var(--muted);font-size:14px;}
+
+  .infogrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,40px);}
+  .orario-list{display:flex;flex-direction:column;gap:8px;font-size:16px;}
+  .orario-list .row{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  .orario-list .row:last-child{border-bottom:none;}
+  iframe.map{border:0;width:100%;filter:grayscale(0.2) contrast(1.05);}
+
+  .menu-block{background:var(--dark);color:var(--cream);border-radius:4px;padding:clamp(24px,4vw,40px);}
+  .menu-block h2{font-size:clamp(20px,3vw,26px);margin:0 0 6px;letter-spacing:0.02em;}
+  .menu-block .sub{margin:0 0 20px;color:var(--muted);font-size:14px;}
+  .menu-items{display:flex;flex-direction:column;gap:10px;}
+  .menu-items .item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed #4A4030;padding-bottom:8px;font-size:15px;}
+  .menu-items .item span:last-child{color:var(--muted);white-space:nowrap;}
+  .note{margin-top:28px;font-size:13px;color:var(--muted-dark);}
+
+  .tab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
+  .tab-card{border:1px solid var(--dark);border-radius:4px;padding:20px 16px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+  .tab-card .label{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:15px;letter-spacing:0.01em;}
+  .tab-card .tag{font-size:12px;color:var(--accent);}
+
+  .contatti-table{display:flex;flex-direction:column;border:1px solid var(--dark);border-radius:4px;overflow:hidden;}
+  .contatti-table .row{display:flex;justify-content:space-between;padding:12px 16px;font-size:15px;border-bottom:1px solid #E0D6C4;}
+  .contatti-table .row:last-child{border-bottom:none;}
+  .contatti-table .row.today{background:var(--cream);font-weight:600;}
+
+  footer{background:var(--dark);color:var(--cream);padding:clamp(32px,5vw,48px) clamp(20px,5vw,48px);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;}
+  footer .brand-foot{display:flex;align-items:center;gap:10px;}
+  footer .brand-foot img{width:40px;height:40px;border-radius:50%;object-fit:cover;}
+  footer .brand-foot span{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:0.02em;}
+  footer .hours{font-size:14px;line-height:1.7;}
+  footer a{font-size:14px;align-self:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <button class="brand" data-nav="home" aria-label="Vai alla home">
+    <img src="uploads/logo.svg" alt="Logo Bar-Tabacchi Fuori Orario"/>
+    <span>BAR-TABACCHI<br/>FUORI ORARIO</span>
+  </button>
+  <nav>
+    <button data-nav="home">HOME</button>
+    <button data-nav="bar">BAR</button>
+    <button data-nav="tabaccheria">TABACCHERIA</button>
+    <button data-nav="contatti">DOVE SIAMO</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ HOME ============ -->
+  <section data-page="home">
+    <div class="hero">
+      <img src="uploads/team.svg" alt="Antonio e Gaetano dietro il bancone"/>
+      <div class="overlay"></div>
+      <div class="content">
+        <img src="uploads/logo.svg" alt="Logo"/>
+        <h1>Bar-Tabacchi<br/>Fuori Orario</h1>
+        <p>Il bar di Sant'Antonio, aperto dalle 6 del mattino</p>
+      </div>
+    </div>
+    <div class="infobar">
+      <span>Lun–Ven 6:00–19:30</span><span>·</span><span>Sab 6:00–12:30</span><span>·</span><span>Dom chiuso</span><span>·</span><span>Via Marconi 13, Sant'Antonio, Porto Mantovano (MN)</span>
+    </div>
+
+    <div class="wrap chisiamo">
+      <div>
+        <p class="eyebrow">Chi siamo</p>
+        <h2>Antonio e Gaetano</h2>
+      </div>
+      <div>
+        <p>Gaetano ha aperto il bar tanti anni fa, con l'idea semplice di essere aperti quando gli altri sono ancora chiusi. Oggi il bancone lo tiene insieme al figlio Antonio, che ci ha messo la sua parte da quando ha deciso di continuare il lavoro di famiglia.</p>
+        <p>Qui i clienti si conoscono per nome, il caffè si prepara mentre si chiacchiera e non serve prenotare niente: si passa, ci si siede, si sta bene.</p>
+      </div>
+    </div>
+
+    <div class="previews">
+      <div class="previews-grid">
+        <button class="preview-card" data-nav="bar">
+          <span class="title">Colazioni e caffetteria</span>
+          <span class="cta">Scopri →</span>
+        </button>
+        <button class="preview-card" data-nav="bar">
+          <span class="title">Pausa pranzo</span>
+          <span class="cta">Scopri →</span>
+        </button>
+        <button class="preview-card" data-nav="bar">
+          <span class="title">Aperitivi</span>
+          <span class="cta">Scopri →</span>
+        </button>
+        <button class="preview-card" data-nav="tabaccheria">
+          <span class="title">Tabaccheria</span>
+          <span class="cta">Scopri →</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="wrap infogrid">
+      <div>
+        <p class="eyebrow">Orari</p>
+        <div class="orario-list">
+          <div class="row"><span>Lunedì – Venerdì</span><span>6:00 – 19:30</span></div>
+          <div class="row"><span>Sabato</span><span>6:00 – 12:30</span></div>
+          <div class="row"><span>Domenica</span><span>Chiuso</span></div>
+        </div>
+        <p style="margin-top:16px;font-size:15px;">Via Marconi 13, Sant'Antonio, Porto Mantovano (MN)</p>
+        <a href="https://maps.app.goo.gl/x6XVbWNs3GUUDtMq6" target="_blank" rel="noopener">Apri in Google Maps →</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <p class="eyebrow" style="margin:0;">Seguici</p>
+        <a href="https://www.instagram.com/bar_tabacchi_fuoriorario" target="_blank" rel="noopener" style="font-size:18px;font-family:'Oswald',sans-serif;">@bar_tabacchi_fuoriorario →</a>
+        <iframe class="map" src="https://www.google.com/maps?q=Via+Marconi+13,+Sant'Antonio,+Porto+Mantovano+MN&output=embed" style="height:180px;" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BAR ============ -->
+  <section data-page="bar">
+    <div class="wrap">
+      <p class="eyebrow">Il nostro bar</p>
+      <h1 style="font-size:clamp(28px,5vw,46px);margin:0 0 12px;">Colazione, pranzo e aperitivo</h1>
+      <p style="font-size:16px;max-width:60ch;margin:0 0 40px;">Dalle sei del mattino al dopolavoro: tre momenti della giornata, un unico bancone.</p>
+
+      <div style="display:flex;flex-direction:column;gap:28px;">
+
+        <div class="menu-block">
+          <h2>Colazione — dalle 6:00</h2>
+          <p class="sub">Caffetteria completa, brioches e bomboloni</p>
+          <div class="menu-items" id="colazione-items"></div>
+        </div>
+
+        <div class="menu-block">
+          <h2>Pausa pranzo</h2>
+          <p class="sub">Piadine, toast, tramezzini, focacce e bevande fresche</p>
+          <div class="menu-items" id="pranzo-items"></div>
+        </div>
+
+        <div class="menu-block">
+          <h2>Aperitivi</h2>
+          <p class="sub">Spritz, cocktail classici e proposte analcoliche</p>
+          <div class="menu-items" id="aperitivi-items"></div>
+        </div>
+
+      </div>
+      <p class="note">[PREZZO] indica un prezzo ancora da confermare.</p>
+    </div>
+  </section>
+
+  <!-- ============ TABACCHERIA ============ -->
+  <section data-page="tabaccheria">
+    <div class="wrap">
+      <p class="eyebrow">Tabaccheria</p>
+      <h1 style="font-size:clamp(28px,5vw,46px);margin:0 0 12px;">Tutti i servizi da tabaccaio</h1>
+      <p style="font-size:16px;max-width:60ch;margin:0 0 40px;">Accanto al bancone del bar, il servizio di tabaccheria di quartiere.</p>
+      <div class="tab-grid" id="tabaccheria-items"></div>
+      <p class="note">[DA CONFERMARE] indica un servizio ancora da verificare con i titolari.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONTATTI ============ -->
+  <section data-page="contatti">
+    <div class="wrap">
+      <p class="eyebrow">Dove siamo</p>
+      <h1 style="font-size:clamp(28px,5vw,46px);margin:0 0 32px;">Contatti</h1>
+
+      <div class="infogrid">
+        <div>
+          <h2 style="font-size:18px;margin:0 0 10px;">Indirizzo</h2>
+          <p style="font-size:17px;margin:0 0 6px;">Via Marconi 13</p>
+          <p style="font-size:17px;margin:0 0 18px;">Sant'Antonio, Porto Mantovano (MN)</p>
+          <a href="https://maps.app.goo.gl/x6XVbWNs3GUUDtMq6" target="_blank" rel="noopener">Apri in Google Maps →</a>
+
+          <h2 style="font-size:18px;margin:28px 0 10px;">Instagram</h2>
+          <a href="https://www.instagram.com/bar_tabacchi_fuoriorario" target="_blank" rel="noopener">@bar_tabacchi_fuoriorario →</a>
+
+          <h2 style="font-size:18px;margin:28px 0 10px;">Parcheggio</h2>
+          <p style="font-size:16px;margin:0;">[DA CONFERMARE]</p>
+        </div>
+
+        <div>
+          <h2 style="font-size:18px;margin:0 0 10px;">Orari</h2>
+          <div class="contatti-table" id="orario-table"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:40px;">
+        <iframe class="map" src="https://www.google.com/maps?q=Via+Marconi+13,+Sant'Antonio,+Porto+Mantovano+MN&output=embed" style="height:340px;" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="brand-foot">
+    <img src="uploads/logo.svg" alt="Logo"/>
+    <span>BAR-TABACCHI<br/>FUORI ORARIO</span>
+  </div>
+  <div class="hours">
+    <div>Lun–Ven 6:00–19:30 · Sab 6:00–12:30 · Dom chiuso</div>
+    <div>Via Marconi 13, Sant'Antonio, Porto Mantovano (MN)</div>
+  </div>
+  <a href="https://www.instagram.com/bar_tabacchi_fuoriorario" target="_blank" rel="noopener">@bar_tabacchi_fuoriorario</a>
+</footer>
+
+<script>
+(function(){
+  var colazioneItems = [
+    { name:'Caffè', price:'[PREZZO]' }, { name:'Caffè decaffeinato', price:'[PREZZO]' }, { name:'Cappuccino', price:'[PREZZO]' },
+    { name:'Latte macchiato', price:'[PREZZO]' }, { name:"Caffè d'orzo", price:'[PREZZO]' }, { name:'Brioches', price:'[PREZZO]' }, { name:'Bomboloni', price:'[PREZZO]' }
+  ];
+  var pranzoItems = [
+    { name:'Piadina', price:'[PREZZO]' }, { name:'Toast', price:'[PREZZO]' }, { name:'Tramezzino', price:'[PREZZO]' },
+    { name:'Focaccia farcita', price:'[PREZZO]' }, { name:'Bevanda fresca', price:'[PREZZO]' }
+  ];
+  var aperitiviItems = [
+    { name:'Spritz Aperol', price:'[PREZZO]' }, { name:'Spritz Campari', price:'[PREZZO]' }, { name:'Spritz Hugo', price:'[PREZZO]' }, { name:'Spritz alla violetta', price:'[PREZZO]' },
+    { name:'Americano', price:'[PREZZO]' }, { name:'Negroni', price:'[PREZZO]' }, { name:'Mojito', price:'[PREZZO]' }, { name:'Gin tonic', price:'[PREZZO]' },
+    { name:'Prosecco', price:'[PREZZO]' }, { name:'Analcolico', price:'[PREZZO]' }
+  ];
+  var tabaccheriaItems = [
+    { label:'Tabacchi e sigarette', tag:'[DA CONFERMARE]' },
+    { label:'Lotto e Superenalotto', tag:'[DA CONFERMARE]' },
+    { label:'Gratta e Vinci', tag:'[DA CONFERMARE]' },
+    { label:'Ricariche telefoniche', tag:'[DA CONFERMARE]' },
+    { label:'Bollettini e pagamenti', tag:'[DA CONFERMARE]' },
+    { label:'Valori bollati e marche da bollo', tag:'[DA CONFERMARE]' },
+    { label:'Biglietti trasporto pubblico', tag:'[DA CONFERMARE]' }
+  ];
+  var GIORNI = ['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
+  var ORARI = {
+    Lunedì:'6:00 – 19:30', Martedì:'6:00 – 19:30', Mercoledì:'6:00 – 19:30',
+    Giovedì:'6:00 – 19:30', Venerdì:'6:00 – 19:30', Sabato:'6:00 – 12:30', Domenica:'Chiuso'
+  };
+
+  function renderItems(elId, items){
+    var el = document.getElementById(elId);
+    el.innerHTML = items.map(function(i){
+      return '<div class="item"><span>'+i.name+'</span><span>'+i.price+'</span></div>';
+    }).join('');
+  }
+  function renderTab(elId, items){
+    var el = document.getElementById(elId);
+    el.innerHTML = items.map(function(i){
+      return '<div class="tab-card">'
+        + '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#0E0E0E" stroke-width="1.6"><circle cx="16" cy="16" r="13"></circle></svg>'
+        + '<span class="label">'+i.label+'</span>'
+        + '<span class="tag">'+i.tag+'</span>'
+        + '</div>';
+    }).join('');
+  }
+  function renderOrario(elId){
+    var el = document.getElementById(elId);
+    var jsDay = new Date().getDay();
+    var todayIdx = jsDay === 0 ? 6 : jsDay - 1;
+    el.innerHTML = GIORNI.map(function(g, i){
+      var isToday = i === todayIdx;
+      return '<div class="row'+(isToday?' today':'')+'"><span>'+g+'</span><span>'+ORARI[g]+'</span></div>';
+    }).join('');
+  }
+
+  renderItems('colazione-items', colazioneItems);
+  renderItems('pranzo-items', pranzoItems);
+  renderItems('aperitivi-items', aperitiviItems);
+  renderTab('tabaccheria-items', tabaccheriaItems);
+  renderOrario('orario-table');
+
+  var VALID_PAGES = ['home','bar','tabaccheria','contatti'];
+  var sections = document.querySelectorAll('section[data-page]');
+  var navButtons = document.querySelectorAll('nav button[data-nav]');
+
+  function showPage(page){
+    if (VALID_PAGES.indexOf(page) === -1) page = 'home';
+    sections.forEach(function(s){ s.classList.toggle('active', s.getAttribute('data-page') === page); });
+    navButtons.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-nav') === page); });
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+
+  function navigate(page, push){
+    if (push !== false) history.pushState({ page: page }, '', '#' + page);
+    showPage(page);
+  }
+
+  document.querySelectorAll('[data-nav]').forEach(function(el){
+    el.addEventListener('click', function(){ navigate(el.getAttribute('data-nav')); });
+  });
+
+  window.addEventListener('popstate', function(e){
+    showPage((e.state && e.state.page) || (location.hash || '').replace('#','') || 'home');
+  });
+
+  showPage((location.hash || '').replace('#','') || 'home');
+})();
+</script>
+
+</body>
+</html>
